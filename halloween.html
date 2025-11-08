@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Glowing Jack-o'-Lantern & Candy Collector — CSS Art</title>
+<link rel="stylesheet" href="click.css" type="text/css" media="all" />
+<style>
+/* your original CSS... (kept as-is) */
+/* ...I omitted it here for brevity — keep your CSS block from the original file */
+
+:root {
+--bg: #06030a;
+--fog: rgba(255, 165, 0, 0.07);
+--pumpkin: #ff7f2a;
+--pumpkin-dark: #d95f13;
+--eye: #111;
+--accent: #ffd86b;
+--candy1: #ff6b9f;
+--candy2: #8ce6ff;
+--candy3: #baff8c;
+--text: #f6f3ec;
+}
+* {
+box-sizing: border-box;
+}
+html,
+body {
+height: 100%;
+margin: 0;
+font-family:
+Inter,
+system-ui,
+-apple-system,
+"Segoe UI",
+Roboto,
+"Helvetica Neue",
+Arial;
+color: var(--text);
+background-image: url(halloween.jpg);
+background-size: cover;
+overflow: hidden;
+}
+.page {
+min-height: 100vh;
+display: grid;
+place-items: center;
+padding: 2rem;
+}
+
+/*
+   Pumpkin
+    */
+.pumpkin-wrap {
+position: relative;
+z-index: 3;
+margin-bottom: 20px;
+}
+.pumpkin {
+width: 420px;
+height: 300px;
+border-radius: 48% 52% 60% 40%/60% 60% 40% 40%;
+background: linear-gradient(
+180deg,
+var(--pumpkin) 0%,
+var(--pumpkin-dark) 70%
+);
+position: relative;
+box-shadow:
+0 12px 40px rgba(255, 115, 0, 0.12),
+0 0 40px rgba(255, 125, 25, 0.18) inset;
+transform: translateZ(0);
+}
+/* ribs */
+.pumpkin::before,
+.pumpkin::after {
+content: "";
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+width: 68%;
+height: 110%;
+border-radius: 50%;
+top: -14%;
+background: linear-gradient(
+180deg,
+rgba(255, 180, 110, 0.06),
+transparent
+);
+mix-blend-mode: overlay;
+pointer-events: none;
+}
+.pumpkin::after {
+left: 36%;
+transform: translateX(-36%);
+width: 30%;
+height: 100%;
+opacity: 0.06;
+}
+
+/* stalk */
+.stalk {
+position: absolute;
+left: 50%;
+top: -28px;
+transform: translateX(-50%);
+width: 80px;
+height: 36px;
+background: linear-gradient(90deg, #463d13, #6d6a22);
+border-radius: 12px 12px 6px 6px;
+box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+/* face cutouts */
+.face {
+position: absolute;
+inset: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+}
+.eyes {
+display: flex;
+gap: 50px;
+margin-top: 30px;
+}
+.eye {
+width: 84px;
+height: 70px;
+background: var(--eye);
+border-radius: 50% 50% 40% 40%;
+position: relative;
+overflow: hidden;
+transform-origin: center center;
+}
+/* inner glowing iris using pseudo element */
+.eye::before {
+content: "";
+position: absolute;
+inset: 10px;
+border-radius: 40%;
+background: radial-gradient(
+circle at 40% 35%,
+rgba(255, 200, 110, 0.98) 6%,
+rgba(255, 140, 0, 0.6) 22%,
+rgba(0, 0, 0, 0) 70%
+);
+filter: blur(6px);
+}
+
+/* blink animation purely css */
+@keyframes blink {
+0%,
+8%,
+100% {
+transform: scaleY(1);
+}
+4% {
+transform: scaleY(0.06);
+}
+}
+/* Let one eye blink slightly out of sync */
+.eye.left {
+animation: blink 5.6s ease-in-out infinite;
+}
+.eye.right {
+animation: blink 6.4s ease-in-out infinite;
+}
+
+.mouth {
+width: 240px;
+height: 70px;
+margin-top: 18px;
+background: linear-gradient(180deg, #111, #000);
+border-radius: 0 0 40% 40%;
+box-shadow: 0 -6px 0 rgba(0, 0, 0, 0.25) inset;
+position: relative;
+overflow: hidden;
+}
+.tooth {
+position: absolute;
+bottom: 0;
+left: 50%;
+transform: translateX(-50%);
+width: 18px;
+height: 28px;
+background: #f8e9b1;
+margin-bottom: 4px;
+border-radius: 0 0 8px 8px;
+}
+
+/* inner glow (shows through eyes and mouth) */
+.inner-glow {
+position: absolute;
+left: 50%;
+top: 50%;
+width: 160px;
+height: 120px;
+transform: translate(-50%, -20%);
+border-radius: 50%;
+background: radial-gradient(
+closest-side,
+rgba(255, 210, 120, 0.95),
+rgba(255, 160, 30, 0.25) 60%,
+transparent 70%
+);
+mix-blend-mode: screen;
+pointer-events: none;
+filter: blur(8px);
+}
+
+/* subtle breathing glow */
+@keyframes pumpkinGlow {
+0% {
+filter: drop-shadow(0 0 12px rgba(255, 140, 30, 0.18));
+}
+50% {
+filter: drop-shadow(0 0 20px rgba(255, 170, 50, 0.28));
+}
+100% {
+filter: drop-shadow(0 0 12px rgba(255, 140, 30, 0.18));
+}
+}
+.pumpkin {
+animation: pumpkinGlow 4.5s ease-in-out infinite;
+}
+
+/* ----------------------------
+   Candles
+   ---------------------------- */
+.candles {
+position: absolute;
+left: 6%;
+bottom: 80px;
+display: flex;
+gap: 18px;
+z-index: 2;
+}
+.candle {
+width: 18px;
+height: 42px;
+background: linear-gradient(#fff, #f0e6c6);
+border-radius: 4px;
+position: relative;
+box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+.candle::before {
+content: "";
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+top: -22px;
+width: 12px;
+height: 32px;
+border-radius: 50% 50% 40% 40%/60% 60% 40% 40%;
+background: radial-gradient(
+circle at 50% 30%,
+#fff7c8 0%,
+#ffd86b 20%,
+#ff9a2a 60%
+);
+opacity: 0.98;
+filter: blur(2px);
+}
+/* flicker */
+@keyframes flicker {
+0% {
+transform: translateY(0) scale(1);
+opacity: 1;
+filter: drop-shadow(0 0 6px rgba(255, 160, 30, 0.9));
+}
+50% {
+transform: translateY(-3px) scale(0.96);
+opacity: 0.86;
+filter: drop-shadow(0 0 12px rgba(255, 200, 50, 0.95));
+}
+100% {
+transform: translateY(0) scale(1);
+opacity: 1;
+}
+}
+.candle::after {
+content: "";
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+top: -14px;
+width: 8px;
+height: 16px;
+border-radius: 50%;
+background: linear-gradient(#ffffd9, #ffc06b);
+animation: flicker 0.16s infinite alternate;
+}
+
+/* ----------------------------
+   Candies (interactive) — CSS shapes
+   ---------------------------- */
+.candies {
+position: absolute;
+right: 5%;
+bottom: 30px;
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 18px;
+padding: 18px;
+z-index: 4;
+}
+.candy {
+width: 64px;
+height: 56px;
+border-radius: 14px;
+display: grid;
+place-items: center;
+cursor: pointer;
+user-select: none;
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
+transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+.candy:active {
+transform: translateY(4px) scale(0.98);
+}
+.candy .swirl {
+width: 44px;
+height: 36px;
+border-radius: 10px;
+background: linear-gradient(135deg, var(--candy1), #f46);
+position: relative;
+}
+.candy.lollipop {
+background: conic-gradient(
+from 120deg at 50% 40%,
+var(--candy1) 0 25%,
+var(--candy2) 25% 50%,
+var(--candy3) 50% 75%,
+var(--accent) 75% 100%
+);
+border-radius: 50%;
+width: 56px;
+height: 56px;
+display: grid;
+place-items: center;
+}
+.candy.lollipop::after {
+content: "";
+position: absolute;
+bottom: -12px;
+width: 6px;
+height: 18px;
+background: #ecd7c3;
+border-radius: 4px;
+}
+
+/* candy pop animation when clicked */
+@keyframes pop {
+0% {
+transform: translateY(0) scale(1);
+}
+50% {
+transform: translateY(-16px) scale(1.12);
+}
+100% {
+transform: translateY(0) scale(1);
+}
+}
+.pop {
+animation: pop 0.42s ease;
+}
+
+/* Scoreboard */
+.hud {
+position: absolute;
+left: 18px;
+top: 18px;
+z-index: 6;
+background: linear-gradient(
+180deg,
+rgba(0, 0, 0, 0.18),
+rgba(0, 0, 0, 0.28)
+);
+padding: 8px 12px;
+border-radius: 10px;
+display: flex;
+gap: 12px;
+align-items: center;
+font-weight: 600;
+}
+.score {
+font-size: 18px;
+}
+
+/* start overlay */
+.start-overlay {
+position: absolute;
+inset: 0;
+background: linear-gradient(
+180deg,
+rgba(0, 0, 0, 0.5),
+rgba(0, 0, 0, 0.7)
+);
+display: grid;
+place-items: center;
+z-index: 20;
+backdrop-filter: blur(2px);
+}
+.start-btn {
+background: transparent;
+border: 2px solid var(--accent);
+padding: 12px 20px;
+border-radius: 999px;
+color: var(--accent);
+font-weight: 700;
+cursor: pointer;
+}
+
+/* small responsiveness */
+@media (max-width: 640px) {
+.pumpkin {
+width: 300px;
+height: 210px;
+}
+.candies {
+transform: scale(0.86);
+right: 2%;
+}
+}
+</style>
+</head>
+<body>
+<main class="page">
+<div class="stage" role="application" aria-label="Halloween CSS art with interactive candy collector">
+<div class="hud" aria-live="polite">
+<div>
+Score
+</div>
+<div class="score" id="score">
+0
+</div>
+</div>
+
+<div class="candles" aria-hidden="true">
+<div class="candle"></div>
+<div class="candle"></div>
+<div class="candle"></div>
+</div>
+
+<div class="pumpkin-wrap">
+<div class="pumpkin" id="pumpkin">
+<div class="inner-glow" aria-hidden="true"></div>
+<div class="stalk" aria-hidden="true"></div>
+<div class="face">
+<div class="eyes">
+<div class="eye left" aria-hidden="true"></div>
+<div class="eye right" aria-hidden="true"></div>
+</div>
+<div class="mouth">
+<div class="tooth"></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="candies" id="candyShelf" aria-hidden="false">
+<div class="candy lollipop" data-value="5" tabindex="0" aria-label="lollipop, 5 points"></div>
+<div class="candy" data-value="3" tabindex="0" aria-label="wrapped candy, 3 points">
+<div class="swirl"></div>
+</div>
+<div class="candy" data-value="2" tabindex="0" aria-label="small candy, 2 points" style="background: linear-gradient(135deg,var(--candy2),#66d);">
+<div class="swirl" style="background: linear-gradient(135deg,#fff,#66d4);width:36px;height:28px;border-radius:8px;"></div>
+</div>
+<div class="candy" data-value="7" tabindex="0" aria-label="mega candy, 7 points" style="background: linear-gradient(135deg,#ffd86b,#ff9f2b);border-radius:14px;"></div>
+</div>
+
+<div class="ground" aria-hidden="true"></div>
+
+<div class="start-overlay" id="overlay">
+<div style="text-align:center; color:var(--text)">
+<h2 style="margin:0 0 8px">Trick or Treat — Tap to begin</h2>
+<button class="start-btn" id="startBtn">Start &amp; Fade Music</button>
+<p style="opacity:0.8;font-size:13px;margin-top:8px">
+(Click candies to collect. Eyes blink with pure CSS.)
+</p>
+</div>
+</div>
+</div>
+</main>
+
+<audio id="bgMusic" src="Halloween.mp3" loop></audio>
+<script src="click.js"></script>
+<script>
+(function () {
+const overlay = document.getElementById("overlay");
+const startBtn = document.getElementById("startBtn");
+const candies = document.querySelectorAll(".candy");
+const scoreEl = document.getElementById("score");
+let score = 0;
+
+const music = document.getElementById("bgMusic");
+music.volume = 0;
+
+// WebAudio minimal init (for click beeps)
+let audioCtx = null;
+let masterGain = null;
+function initAudio() {
+audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+masterGain = audioCtx.createGain();
+masterGain.gain.value = 0.25;
+masterGain.connect(audioCtx.destination);
+}
+
+function playClickBeep() {
+if (!audioCtx) initAudio();
+const now = audioCtx.currentTime;
+const o = audioCtx.createOscillator();
+const g = audioCtx.createGain();
+o.type = "sine";
+o.frequency.setValueAtTime(880, now);
+g.gain.setValueAtTime(0, now);
+g.gain.linearRampToValueAtTime(0.25, now + 0.005);
+g.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+o.connect(g);
+g.connect(masterGain);
+o.start(now);
+o.stop(now + 0.3);
+}
+
+function startExperience() {
+overlay.style.transition = "opacity .5s ease, visibility 0s .5s";
+overlay.style.opacity = 0;
+overlay.style.visibility = "hidden";
+if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+music.volume = 0.3;
+music.play().catch(err => console.log("Play blocked:", err));
+}
+
+startBtn.addEventListener("click", startExperience);
+overlay.addEventListener("click", function (e) {
+if (e.target === overlay) startExperience();
+});
+
+candies.forEach((c) => {
+c.addEventListener("click", () => collectCandy(c));
+c.addEventListener("keydown", (ev) => {
+if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); collectCandy(c); }
+});
+});
+
+function collectCandy(c) {
+const val = Number(c.dataset.value || 1);
+score += val;
+scoreEl.textContent = score;
+// visual pop
+c.classList.remove("pop");
+void c.offsetWidth;
+c.classList.add("pop");
+// tiny pumpkin nudge
+const p = document.getElementById("pumpkin");
+p.style.transition = "transform .18s ease";
+p.style.transform = "scale(1.02)";
+setTimeout(() => { p.style.transform = ""; }, 160);
+// audio click
+try { playClickBeep(); } catch (e) { console.log("Audio error:", e); }
+}
+
+// load saved score
+try {
+const saved = localStorage.getItem("halloween-score");
+if (saved) { score = Number(saved); scoreEl.textContent = score; }
+} catch (e) {}
+setInterval(() => {
+try { localStorage.setItem("halloween-score", String(score)); } catch (e) {}
+}, 1500);
+
+// accessibility start shortcut
+window.addEventListener("keydown", (e) => {
+if ((e.key === "s" || e.key === "S") && overlay.style.visibility !== "hidden") startExperience();
+});
+})();
+</script>
+</body>
+</html>
